@@ -36,19 +36,31 @@
   animation: spinSlow 3s linear infinite;
 }
 
+/* Hide scrollbar for clean carousel UI */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 0px;
 }
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2E7D32;
+  background: #153520;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #256628;
+  background: #0B1B10;
 }
 
 .font-dm-serif {

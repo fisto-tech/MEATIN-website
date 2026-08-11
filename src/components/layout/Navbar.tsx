@@ -39,12 +39,12 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 pt-3 sm:pt-4 lg:pt-[1.2vw] px-3 sm:px-6 lg:px-[2.5vw] w-full flex justify-center pointer-events-none">
-        <div className="pointer-events-auto bg-white/85 backdrop-blur-md rounded-2xl md:rounded-[28px] lg:rounded-[1.8vw] border border-white/60 shadow-lg px-4 sm:px-6 lg:px-[1.8vw] py-2 lg:py-[0.6vw] flex items-center justify-between w-full lg:w-fit lg:gap-[2.2vw] font-inter transition-all duration-300">
+      <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all duration-300">
+        <div className="w-full max-w-[1400px] lg:max-w-[92vw] mx-auto px-4 sm:px-6 lg:px-[2vw] py-3 lg:py-[0.7vw] flex items-center justify-between font-inter">
           {/* Logo */}
           <Logo variant="dark" />
 
-          {/* Desktop Navigation - Pure VW Units for Desktop with Balanced Left/Right Padding */}
+          {/* Desktop Navigation - Full Width Navbar with Balanced Spacing */}
           <nav className="hidden lg:flex items-center gap-[1.5vw] whitespace-nowrap">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
@@ -60,7 +60,7 @@ export const Navbar: React.FC = () => {
                   }`}
                 >
                   {item.label}
-                  {/* Active indicator red line under HOME */}
+                  {/* Active indicator red line under active route */}
                   {isActive && (
                     <span className="absolute bottom-0 left-0 right-0 lg:h-[0.14vw] bg-[#C62828] rounded-full" />
                   )}

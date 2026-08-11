@@ -7,6 +7,7 @@ import CategoriesSection from '@/components/home/CategoriesSection';
 import WhyChooseUsSection from '@/components/home/WhyChooseUsSection';
 import OurCoreValuesSection from '@/components/home/OurCoreValuesSection';
 import CertifiedExcellenceSection from '@/components/home/CertifiedExcellenceSection';
+import RecipeInspirationSection from '@/components/home/RecipeInspirationSection';
 
 export default function HomePage() {
   return (
@@ -125,6 +126,9 @@ export default function HomePage() {
 
       {/* Certified Excellence Section */}
       <CertifiedExcellenceSection />
+
+      {/* Recipe Inspiration Section */}
+      <RecipeInspirationSection />
     </div>
   );
 }

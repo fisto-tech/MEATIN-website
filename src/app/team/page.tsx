@@ -1,6 +1,10 @@
 import React from 'react';
-import ComingSoon from '@/components/ui/ComingSoon';
+import MeetOurTeamSection from '@/components/team/MeetOurTeamSection';
 
 export default function TeamPage() {
-  return <ComingSoon />;
+  return (
+    <main className="min-h-screen bg-[#FAF6F0]">
+      <MeetOurTeamSection />
+    </main>
+  );
 }
