@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 
 interface JobCard {
@@ -315,6 +316,7 @@ const allJobOpenings: JobCard[] = [
 const positionOptions = allJobOpenings.map(j => j.title).concat('Other / General Application');
 
 export const CareersSection: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
   const [selectedJob, setSelectedJob] = useState<JobCard | null>(null);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [viewAllJobs, setViewAllJobs] = useState(false);
@@ -326,12 +328,15 @@ export const CareersSection: React.FC = () => {
   const [position, setPosition] = useState('');
   const [experience, setExperience] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
-  const [agreeTerms, setAgreeTerms] = useState(false);
   const [resumeFileName, setResumeFileName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const sliderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Lock background body scroll when popup modal is active
   useEffect(() => {
@@ -380,10 +385,6 @@ export const CareersSection: React.FC = () => {
 
   const handleModalFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!agreeTerms) {
-      alert('Please agree to the terms & conditions to proceed.');
-      return;
-    }
     setIsSubmitting(true);
     try {
       const formData = new FormData();
@@ -414,7 +415,6 @@ export const CareersSection: React.FC = () => {
         setPosition('');
         setExperience('');
         setCoverLetter('');
-        setAgreeTerms(false);
         setResumeFileName('');
         setIsApplicationModalOpen(false);
       }, 3000);
@@ -426,7 +426,7 @@ export const CareersSection: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full bg-[#FAF6F0] pt-16 sm:pt-20 lg:pt-[4.2rem] pb-16 lg:pb-[4vw] overflow-hidden z-10 font-manrope">
+    <section className="relative w-full bg-white pt-16 sm:pt-20 lg:pt-[4.2rem] pb-16 lg:pb-[4vw] overflow-hidden z-10 font-manrope">
       
       {/* Background Soft Texture Overlay */}
       <div className="absolute top-0 left-0 right-0 h-[35vw] pointer-events-none z-0 opacity-30 bg-[url('/assets/home/recipe-inspiration/background-image.webp')] bg-cover bg-center" />
@@ -445,11 +445,11 @@ export const CareersSection: React.FC = () => {
             className="object-cover object-center lg:object-left"
             priority
           />
-          {/* Smooth Left-to-Right Soft Gradient Fade into #FAF6F0 */}
-          <div className="absolute inset-y-0 left-0 w-full lg:w-[48%] bg-gradient-to-r from-[#FAF6F0] via-[#FAF6F0]/90 to-transparent z-10 pointer-events-none" />
+          {/* Smooth Left-to-Right Soft Gradient Fade into white */}
+          <div className="absolute inset-y-0 left-0 w-full lg:w-[48%] bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none" />
           {/* Subtle Top & Bottom Soft Fades */}
-          <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-[#FAF6F0] to-transparent opacity-60 z-10" />
-          <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#FAF6F0] to-transparent opacity-60 z-10" />
+          <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent opacity-60 z-10" />
+          <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent opacity-60 z-10" />
         </div>
 
         {/* Left Content Box */}
@@ -464,37 +464,12 @@ export const CareersSection: React.FC = () => {
             </h1>
 
             {/* Sub-paragraph */}
-            <p className="font-manrope font-medium text-sm sm:text-base lg:text-[1vw] text-[#4A5568] leading-relaxed mb-6 sm:mb-8 lg:mb-[1.8vw] max-w-lg lg:max-w-[34vw]">
-              Join one of Kerala&apos;s fastest-growing meat processing companies and grow with a passionate team.
+            <p className="font-manrope font-medium text-sm sm:text-base lg:text-[1vw] text-[#2a2c30] leading-relaxed mb-6 sm:mb-8 lg:mb-[1.8vw] max-w-lg lg:max-w-[34vw]">
+              Join one of Kerala’s fastest-growing meat processing companies and grow with a passionate team. At MEATIN, we offer a supportive workplace where you can develop your skills, take on new opportunities, and build a rewarding career while growing with us.
+
             </p>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3.5 sm:gap-4 lg:gap-[1vw]">
-              {/* Green View Positions Button */}
-              <button
-                onClick={scrollToJobs}
-                className="bg-[#153520] hover:bg-[#0B1B10] text-white font-bold text-xs sm:text-sm lg:text-[0.85vw] px-5 sm:px-6 py-3 lg:py-[0.75vw] rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 cursor-pointer uppercase tracking-wider"
-              >
-                <svg className="w-4 h-4 lg:w-[1vw] lg:h-[1vw]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                </svg>
-                VIEW OPEN POSITIONS
-              </button>
-
-              {/* White Upload Resume Button */}
-              <button
-                onClick={scrollToForm}
-                className="bg-white hover:bg-slate-50 text-[#153520] border-2 border-slate-300/80 font-bold text-xs sm:text-sm lg:text-[0.85vw] px-5 sm:px-6 py-3 lg:py-[0.75vw] rounded-lg shadow-2xs hover:shadow-md transition-all duration-300 flex items-center gap-2 cursor-pointer uppercase tracking-wider"
-              >
-                <svg className="w-4 h-4 lg:w-[1vw] lg:h-[1vw]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" x2="12" y1="3" y2="15" />
-                </svg>
-                UPLOAD RESUME
-              </button>
-            </div>
+         
 
           </div>
         </div>
@@ -573,7 +548,7 @@ export const CareersSection: React.FC = () => {
             {allJobOpenings.map((job) => (
               <div
                 key={job.id}
-                className="bg-white rounded-xl lg:rounded-[0.8vw] p-3.5 sm:p-4 lg:p-[0.9vw] border border-slate-200/90 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
+                className="bg-[#FAF6F0] rounded-xl lg:rounded-[0.8vw] p-3.5 sm:p-4 lg:p-[0.9vw] border border-[#EADBCC] shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
                   {/* Top Circular Icon */}
@@ -640,7 +615,7 @@ export const CareersSection: React.FC = () => {
             {allJobOpenings.map((job) => (
               <div
                 key={job.id}
-                className="min-w-[190px] sm:min-w-[210px] lg:min-w-[13vw] bg-white rounded-xl lg:rounded-[0.8vw] p-3.5 sm:p-4 lg:p-[0.9vw] border border-slate-200/80 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group flex-shrink-0"
+                className="min-w-[190px] sm:min-w-[210px] lg:min-w-[13vw] bg-[#FAF6F0] rounded-xl lg:rounded-[0.8vw] p-3.5 sm:p-4 lg:p-[0.9vw] border border-[#EADBCC] shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group flex-shrink-0"
               >
                 <div>
                   {/* Top Circular Icon */}
@@ -708,7 +683,7 @@ export const CareersSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-[2vw] items-stretch">
           
           {/* Left Column Card: DIDN'T FIND A SUITABLE POSITION? */}
-          <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl lg:rounded-[1.2vw] p-6 sm:p-8 lg:p-[2.2vw] shadow-2xs flex flex-col items-center justify-center text-center relative overflow-hidden group">
+          <div className="lg:col-span-5 bg-[#FAF6F0] border border-[#EADBCC] rounded-2xl lg:rounded-[1.2vw] p-6 sm:p-8 lg:p-[2.2vw] shadow-2xs flex flex-col items-center justify-center text-center relative overflow-hidden group">
             
             <h3 className="font-chau font-normal text-xl sm:text-2xl lg:text-[1.6vw] text-[#153520] uppercase tracking-tight mb-2">
               DIDN&apos;T FIND A SUITABLE POSITION?
@@ -793,7 +768,7 @@ export const CareersSection: React.FC = () => {
           </div>
 
           {/* Right Column Card: UPLOAD YOUR RESUME FORM */}
-          <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl lg:rounded-[1.2vw] p-6 sm:p-8 lg:p-[2.2vw] shadow-2xs">
+          <div className="lg:col-span-7 bg-[#FAF6F0] border border-[#EADBCC] rounded-2xl lg:rounded-[1.2vw] p-6 sm:p-8 lg:p-[2.2vw] shadow-2xs">
             
             <h3 className="font-chau font-normal text-2xl sm:text-3xl lg:text-[1.8vw] text-[#153520] uppercase tracking-tight mb-6">
               UPLOAD YOUR RESUME
@@ -826,7 +801,7 @@ export const CareersSection: React.FC = () => {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Enter your full name"
-                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors"
+                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors"
                     />
                   </div>
                   <div>
@@ -839,7 +814,7 @@ export const CareersSection: React.FC = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email"
-                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors"
+                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors"
                     />
                   </div>
                 </div>
@@ -856,7 +831,7 @@ export const CareersSection: React.FC = () => {
                       value={mobile}
                       onChange={(e) => setMobile(e.target.value)}
                       placeholder="Enter your mobile number"
-                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors"
+                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors"
                     />
                   </div>
                   <div>
@@ -866,7 +841,7 @@ export const CareersSection: React.FC = () => {
                     <select
                       value={position}
                       onChange={(e) => setPosition(e.target.value)}
-                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors text-slate-700"
+                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors text-slate-700"
                     >
                       <option value="">Select Position</option>
                       {positionOptions.map((opt) => (
@@ -887,7 +862,7 @@ export const CareersSection: React.FC = () => {
                     <select
                       value={experience}
                       onChange={(e) => setExperience(e.target.value)}
-                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors text-slate-700"
+                      className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors text-slate-700"
                     >
                       <option value="">Select Experience</option>
                       <option value="Fresher / < 1 Year">Fresher / &lt; 1 Year</option>
@@ -910,7 +885,7 @@ export const CareersSection: React.FC = () => {
                         onChange={handleFileChange}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                       />
-                      <div className="w-full text-xs lg:text-[0.8vw] p-2.5 rounded-lg border border-slate-200 bg-slate-50/50 text-slate-600 flex items-center justify-between">
+                      <div className="w-full text-xs lg:text-[0.8vw] p-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 flex items-center justify-between">
                         <span className="bg-[#E8F5E9] text-[#153520] px-3 py-1.5 rounded-md font-bold border border-emerald-200 text-xs">
                           Choose File
                         </span>
@@ -935,24 +910,13 @@ export const CareersSection: React.FC = () => {
                     value={coverLetter}
                     onChange={(e) => setCoverLetter(e.target.value)}
                     placeholder="Write a few lines about yourself"
-                    className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors"
+                    className="w-full text-xs lg:text-[0.8vw] p-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520] transition-colors"
                   />
                 </div>
 
                 {/* Row 5: Checkbox & Submit Button */}
                 <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <label className="flex items-center gap-2 text-xs lg:text-[0.78vw] text-slate-600 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      required
-                      checked={agreeTerms}
-                      onChange={(e) => setAgreeTerms(e.target.checked)}
-                      className="w-4 h-4 rounded border-slate-300 text-[#153520] focus:ring-[#153520]"
-                    />
-                    <span>
-                      I agree to the <span className="underline font-semibold">terms & conditions</span> and <span className="underline font-semibold">privacy policy</span>
-                    </span>
-                  </label>
+                  
 
                   <button
                     type="submit"
@@ -984,12 +948,12 @@ export const CareersSection: React.FC = () => {
       {/* ========================================================================= */}
       {/* 4. FULL JOB DETAILS & APPLICATION MODAL FOR "APPLY NOW"                    */}
       {/* ========================================================================= */}
-      {isApplicationModalOpen && selectedJob && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 pt-20 sm:pt-24 lg:pt-20 pb-6 bg-slate-950/75 backdrop-blur-md animate-fade-in font-manrope">
+      {mounted && isApplicationModalOpen && selectedJob && createPortal(
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md animate-fade-in font-manrope">
           <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100 max-h-[85vh] flex flex-col my-auto">
             
             {/* Modal Header */}
-            <div className="bg-[#153520] text-white p-5 sm:p-6 flex items-center justify-between">
+            <div className="bg-[#153520] text-white p-5 sm:p-6 flex items-center justify-between shrink-0">
               <div>
                 <span className="text-xs uppercase tracking-widest text-[#D4A437] font-bold">
                   {selectedJob.department}
@@ -997,6 +961,7 @@ export const CareersSection: React.FC = () => {
                 <h3 className="text-xl sm:text-2xl font-bold mt-0.5">{selectedJob.title}</h3>
               </div>
               <button
+                type="button"
                 onClick={() => setIsApplicationModalOpen(false)}
                 className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
               >
@@ -1006,28 +971,28 @@ export const CareersSection: React.FC = () => {
               </button>
             </div>
 
-            {/* Modal Content Scrollable Area */}
-            <div className="p-6 overflow-y-auto space-y-6 flex-1">
-              
-              {submitSuccess ? (
-                <div className="py-12 text-center space-y-3">
-                  <div className="w-16 h-16 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto">
-                    <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <h4 className="text-xl font-bold text-[#153520]">Application Submitted Successfully!</h4>
-                  <p className="text-sm text-slate-600 max-w-md mx-auto">
-                    Thank you for applying for the <strong>{selectedJob.title}</strong> position at MEATIN. Our recruitment team will review your application and contact you soon.
-                  </p>
+            {submitSuccess ? (
+              <div className="p-6 overflow-y-auto space-y-3 text-center py-12 flex-1">
+                <div className="w-16 h-16 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto">
+                  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
                 </div>
-              ) : (
-                <>
+                <h4 className="text-xl font-bold text-[#153520]">Application Submitted Successfully!</h4>
+                <p className="text-sm text-black font-medium max-w-md mx-auto">
+                  Thank you for applying for the <strong>{selectedJob.title}</strong> position at MEATIN. Our recruitment team will review your application and contact you soon.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleModalFormSubmit} className="flex flex-col flex-1 overflow-hidden">
+                {/* Modal Content Scrollable Area */}
+                <div className="p-6 pb-0 overflow-y-auto space-y-6 flex-1">
+                  
                   {/* Job Specs & Description Card */}
                   <div className="bg-[#FAF6F0] p-4 sm:p-5 rounded-xl border border-[#EADBCC] space-y-3.5">
                     
                     {/* Metadata Badges */}
-                    <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-700">
+                    <div className="flex flex-wrap gap-4 text-xs font-bold text-black">
                       <span className="flex items-center gap-1.5">
                         <svg className="w-4 h-4 text-[#D62828]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
@@ -1055,7 +1020,7 @@ export const CareersSection: React.FC = () => {
                     {/* Job Overview */}
                     <div>
                       <span className="text-xs font-bold text-[#153520] block mb-1">Job Overview:</span>
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-black font-medium leading-relaxed">
                         {selectedJob.description}
                       </p>
                     </div>
@@ -1065,7 +1030,7 @@ export const CareersSection: React.FC = () => {
                       <span className="text-xs font-bold text-[#153520] block mb-1.5">Key Qualifications & Requirements:</span>
                       <ul className="space-y-1.5">
                         {selectedJob.requirements.map((req, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-xs text-slate-700">
+                          <li key={idx} className="flex items-start gap-2 text-xs font-medium text-black">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#153520] mt-1.5 flex-shrink-0" />
                             <span>{req}</span>
                           </li>
@@ -1075,51 +1040,51 @@ export const CareersSection: React.FC = () => {
 
                   </div>
 
-                  {/* Application Form for Selected Job */}
-                  <form onSubmit={handleModalFormSubmit} className="space-y-4">
-                    <h4 className="font-extrabold text-slate-900 text-sm border-b pb-2">
+                  {/* Application Form Inputs */}
+                  <div className="space-y-4">
+                    <h4 className="font-extrabold text-black text-sm border-b pb-2">
                       Apply for {selectedJob.title}
                     </h4>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">Full Name *</label>
+                        <label className="block text-xs font-bold text-black mb-1">Full Name *</label>
                         <input
                           type="text"
                           required
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
                           placeholder="Enter your name"
-                          className="w-full text-xs p-3 rounded-lg border border-slate-200 focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520]"
+                          className="w-full text-xs text-black font-medium p-3 rounded-lg border border-slate-300 focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520]"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
+                        <label className="block text-xs font-bold text-black mb-1">Email Address *</label>
                         <input
                           type="email"
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="Enter your email"
-                          className="w-full text-xs p-3 rounded-lg border border-slate-200 focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520]"
+                          className="w-full text-xs text-black font-medium p-3 rounded-lg border border-slate-300 focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">Mobile Number *</label>
+                        <label className="block text-xs font-bold text-black mb-1">Mobile Number *</label>
                         <input
                           type="tel"
                           required
                           value={mobile}
                           onChange={(e) => setMobile(e.target.value)}
                           placeholder="+91 98765 43210"
-                          className="w-full text-xs p-3 rounded-lg border border-slate-200 focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520]"
+                          className="w-full text-xs text-black font-medium p-3 rounded-lg border border-slate-300 focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520]"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">Upload Resume (PDF / DOCX) *</label>
+                        <label className="block text-xs font-bold text-black mb-1">Upload Resume (PDF / DOCX) *</label>
                         <div className="relative">
                           <input
                             type="file"
@@ -1128,51 +1093,44 @@ export const CareersSection: React.FC = () => {
                             onChange={handleFileChange}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                           />
-                          <div className="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-600 flex items-center justify-between">
+                          <div className="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-slate-50 text-black font-medium flex items-center justify-between">
                             <span className="bg-[#153520] text-white px-3 py-1 rounded text-[10px] font-bold">Browse</span>
-                            <span className="truncate text-slate-500 text-xs ml-2">{resumeFileName || 'No file chosen'}</span>
+                            <span className="truncate text-black font-medium text-xs ml-2">{resumeFileName || 'No file chosen'}</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Cover Note (Optional)</label>
+                      <label className="block text-xs font-bold text-black mb-1">Cover Note (Optional)</label>
                       <textarea
                         rows={2}
                         value={coverLetter}
                         onChange={(e) => setCoverLetter(e.target.value)}
                         placeholder="Briefly introduce yourself and why you'd like to join MEATIN..."
-                        className="w-full text-xs p-3 rounded-lg border border-slate-200 focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520]"
+                        className="w-full text-xs text-black font-medium p-3 rounded-lg border border-slate-300 focus:outline-none focus:border-[#153520] focus:ring-1 focus:ring-[#153520]"
                       />
                     </div>
+                  </div>
 
-                    <div className="flex items-center gap-2 text-xs text-slate-600">
-                      <input
-                        type="checkbox"
-                        required
-                        checked={agreeTerms}
-                        onChange={(e) => setAgreeTerms(e.target.checked)}
-                        className="w-4 h-4 rounded border-slate-300 text-[#153520]"
-                      />
-                      <span>I agree to the terms & conditions and privacy policy</span>
-                    </div>
+                </div>
 
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-[#153520] hover:bg-[#0B1B10] text-white font-bold text-xs py-3 rounded-lg transition-colors shadow-md cursor-pointer uppercase tracking-wider"
-                    >
-                      {isSubmitting ? 'Submitting Application...' : 'Submit Application Now'}
-                    </button>
-                  </form>
-                </>
-              )}
-
-            </div>
+                {/* Static Bottom Submit Button Footer */}
+                <div className="p-4 sm:px-6 bg-white border-t border-slate-100 shrink-0 shadow-lg">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-[#153520] hover:bg-[#0B1B10] text-white font-bold text-xs py-3.5 rounded-lg transition-colors shadow-md cursor-pointer uppercase tracking-wider"
+                  >
+                    {isSubmitting ? 'Submitting Application...' : 'Submit Application Now'}
+                  </button>
+                </div>
+              </form>
+            )}
 
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
     </section>

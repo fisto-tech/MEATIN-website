@@ -17,7 +17,7 @@ export const ContactHero: React.FC = () => {
             <span>We Are Here to Help</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-regular tracking-tight text-white leading-tight">
             Contact Us
           </h1>
 

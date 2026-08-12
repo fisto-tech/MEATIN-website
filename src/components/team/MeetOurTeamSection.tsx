@@ -208,12 +208,12 @@ export const MeetOurTeamSection: React.FC = () => {
           </div>
 
           {/* 3 Leader Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-[2vw] max-w-6xl lg:max-w-[70vw] mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-[1.6vw] max-w-4xl sm:max-w-5xl lg:max-w-[56vw] mx-auto">
             {executiveLeaders.map((leader) => (
               <div key={leader.name} className="relative w-full mb-12 lg:mb-[3vw] group">
                 
                 {/* Upper Portrait Photo Container (Shifted 16px right from container edge) */}
-                <div className="relative w-[calc(100%-16px)] ml-4 aspect-[4/4.5] overflow-hidden bg-slate-100 shadow-md">
+                <div className="relative w-[calc(100%-16px)] ml-4 aspect-[4/4.2] overflow-hidden bg-slate-100 shadow-md">
                   <Image
                     src={leader.image}
                     alt={leader.name}
