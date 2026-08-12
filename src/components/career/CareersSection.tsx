@@ -1019,7 +1019,7 @@ export const CareersSection: React.FC = () => {
 
                     {/* Job Overview */}
                     <div>
-                      <span className="text-xs font-bold text-[#153520] block mb-1">Job Overview:</span>
+                      <span className="text-md font-bold text-[#153520] block mb-1">Job Overview:</span>
                       <p className="text-xs sm:text-sm text-black font-medium leading-relaxed">
                         {selectedJob.description}
                       </p>
@@ -1027,7 +1027,7 @@ export const CareersSection: React.FC = () => {
 
                     {/* Key Qualifications */}
                     <div className="pt-2 border-t border-slate-200/80">
-                      <span className="text-xs font-bold text-[#153520] block mb-1.5">Key Qualifications & Requirements:</span>
+                      <span className="text-md font-bold text-[#153520] block mb-1.5">Key Qualifications & Requirements:</span>
                       <ul className="space-y-1.5">
                         {selectedJob.requirements.map((req, idx) => (
                           <li key={idx} className="flex items-start gap-2 text-xs font-medium text-black">

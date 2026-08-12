@@ -134,8 +134,8 @@ const FEATURED_LOCATIONS: DistrictLocation[] = [
     district: 'Thiruvananthapuram District',
     address: 'MEATIN Trivandrum Outlet, Kowdiar Main Road, Thiruvananthapuram - 695003',
     phone: '+91 99466 16162',
-    pinCoords: { x: 74, y: 86 },
-    tooltipOffset: { right: 52, top: 75 }, // Shift left and up to stay on-screen
+    pinCoords: { x: 88, y: 86 },
+    tooltipOffset: { right: 45, top: 75 }, // Shift left and up to stay on-screen
   },
 ];
 
@@ -256,8 +256,8 @@ export const FranchisePageUI: React.FC = () => {
             {/* Section Header Centered with font-chau */}
             <div className="text-center mb-8">
               <h2 className="font-chau uppercase text-3xl sm:text-4xl lg:text-5xl font-regular tracking-tight text-slate-900 leading-tight">
-                <span className="block text-[#153520] mb-1">OUR FRANCHISE</span>
-                <span className="text-[#1F5A3C] relative inline-block">
+                <span className=" text-[#153520] mb-1">OUR FRANCHISE </span>
+                <span className="text-[#1F5A3C] relative ">
                   NETWORK
                   <span className="block w-16 h-1.5 bg-[#1F5A3C] rounded-full mt-1.5 mx-auto" />
                 </span>
