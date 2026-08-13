@@ -8,10 +8,11 @@ import WhyChooseUsSection from '@/components/home/WhyChooseUsSection';
 import OurCoreValuesSection from '@/components/home/OurCoreValuesSection';
 import CertifiedExcellenceSection from '@/components/home/CertifiedExcellenceSection';
 import RecipeInspirationSection from '@/components/home/RecipeInspirationSection';
+import ScrollVideoSection from '@/components/home/ScrollVideoSection';
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-slate-950">
+    <div className="relative min-h-screen w-full bg-slate-950">
       {/* Background Video */}
       <div className="fixed inset-0 z-0 overflow-hidden">
         <video
@@ -30,7 +31,10 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 z-[1] pointer-events-none" />
       </div>
 
-      {/* Main Hero Content - Responsive with vw units for desktop screens */}
+      {/* Scroll-Driven Video/Image Sequence Section (NOW FIRST) */}
+      <ScrollVideoSection />
+
+      {/* Main Hero Content (NOW SECOND) - Responsive with vw units for desktop screens */}
       <div className="relative z-10 min-h-screen flex flex-col justify-center pt-24 pb-12 sm:pt-28 lg:pt-[8vw] px-4 sm:px-8 md:px-12 lg:px-[5vw] max-w-full lg:max-w-[96vw] mx-auto">
         <div className="w-full max-w-2xl lg:max-w-[55vw] py-6 sm:py-8 lg:py-[1vw]">
           

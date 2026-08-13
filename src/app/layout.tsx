@@ -46,6 +46,8 @@ export const metadata: Metadata = {
   },
 };
 
+import SmoothScroll from '@/components/layout/SmoothScroll';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -61,7 +63,9 @@ export default function RootLayout({
         <Preloader />
         <Navbar />
         <main className="flex-1 w-full">
-          {children}
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
         </main>
         <Footer />
       </body>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { motion, Variants } from 'framer-motion';
 
 interface TeamMember {
   name: string;
@@ -17,21 +18,21 @@ const executiveLeaders: TeamMember[] = [
     name: 'Mr. SHIBU K. MOHAMED',
     role: 'Chairman',
     image: '/assets/meet-our-team/Shibu k muhammed chairman.webp',
-    bg500: '#9E1B1B', // Dark Red
+    bg500: '#9E1B1B',
     bg900: '#5C0F0F',
   },
   {
     name: 'Mr. ALI VARIKUNNATH',
     role: 'Managing Director',
     image: '/assets/meet-our-team/Ali varikkunnath MD.webp',
-    bg500: '#153520', // Dark Green
+    bg500: '#153520',
     bg900: '#0B1B10',
   },
   {
     name: 'Mr. RAFEEQUE ARAKKAKATTIL',
     role: 'Chief Executive Officer',
     image: '/assets/meet-our-team/Rafeeque ak CEO.webp',
-    bg500: '#1E3A8A', // Dark Navy
+    bg500: '#1E3A8A',
     bg900: '#0F172A',
   },
 ];
@@ -41,110 +42,147 @@ const directors: TeamMember[] = [
     name: 'Mohamed Asharaf K',
     role: 'Director',
     image: '/assets/meet-our-team/MOHAMED ASHARAF K.webp',
-    bg500: '#9E1B1B', // Dark Red
+    bg500: '#9E1B1B',
     bg900: '#5C0F0F',
   },
   {
     name: 'Anfas K Mohamed',
     role: 'Director & CMO',
     image: '/assets/meet-our-team/ANFAS K MOHAMED CMO.webp',
-    bg500: '#831843', // Dark Burgundy
+    bg500: '#831843',
     bg900: '#500727',
   },
   {
     name: 'Nazeer VM',
     role: 'Director',
     image: '/assets/meet-our-team/NAZEER VM.webp',
-    bg500: '#4C1D95', // Dark Purple
+    bg500: '#4C1D95',
     bg900: '#2E1065',
   },
   {
     name: 'Jadeer Akthar M',
     role: 'Director',
     image: '/assets/meet-our-team/JADEER AKTHAR M.webp',
-    bg500: '#153520', // Dark Green
+    bg500: '#153520',
     bg900: '#0B1B10',
   },
   {
     name: 'Arshad Asharaf',
     role: 'Director',
     image: '/assets/meet-our-team/ARSHAD ASHARAF.webp',
-    bg500: '#1E3A8A', // Dark Navy
+    bg500: '#1E3A8A',
     bg900: '#0F172A',
   },
   {
     name: 'Rooshid Mohiyudheen C A',
     role: 'Director',
     image: '/assets/meet-our-team/ROOSHID MOHIYUDHEEN C A.webp',
-    bg500: '#0F5132', // Dark Emerald
+    bg500: '#0F5132',
     bg900: '#052C1E',
   },
   {
     name: 'Nasir Neriyar',
     role: 'Director',
     image: '/assets/meet-our-team/NASIR NERIYAR.webp',
-    bg500: '#1E40AF', // Dark Royal Blue
+    bg500: '#1E40AF',
     bg900: '#172554',
   },
   {
     name: 'Moosakutty MM',
     role: 'Director',
     image: '/assets/meet-our-team/MOOSAKUTTY M M.webp',
-    bg500: '#115E59', // Dark Teal
+    bg500: '#115E59',
     bg900: '#042F2E',
   },
   {
     name: 'Sabeer Abdul Rahman',
     role: 'Director',
     image: '/assets/meet-our-team/SABEER ABDUL RAHMAN.webp',
-    bg500: '#334155', // Dark Slate
+    bg500: '#334155',
     bg900: '#0F172A',
   },
   {
     name: 'Abbas Chemban',
     role: 'Director',
     image: '/assets/meet-our-team/ABBAS CHEMBAN.webp',
-    bg500: '#153520', // Dark Green
+    bg500: '#153520',
     bg900: '#0B1B10',
   },
   {
     name: 'Hydros Villan',
     role: 'Director',
     image: '/assets/meet-our-team/HYDROS VILLAN.webp',
-    bg500: '#365314', // Dark Olive
+    bg500: '#365314',
     bg900: '#1A2E05',
   },
   {
     name: 'Rafi Abdu Rahman',
     role: 'Director',
     image: '/assets/meet-our-team/RAFI ABDU RAHMAN.webp',
-    bg500: '#78350F', // Dark Brown
+    bg500: '#78350F',
     bg900: '#451A03',
   },
   {
     name: 'Anas Kamaru',
     role: 'Director & Plant Manager',
     image: '/assets/meet-our-team/ANAS KAMARU plant manager.webp',
-    bg500: '#9A3412', // Dark Rust
+    bg500: '#9A3412',
     bg900: '#431407',
   },
   {
     name: 'Mohamed Gadhafi Pilakal',
     role: 'Director',
     image: '/assets/meet-our-team/MOHAMED GADHAFI PILAKAL.webp',
-    bg500: '#991B1B', // Dark Crimson
+    bg500: '#991B1B',
     bg900: '#450A0A',
   },
   {
     name: 'Mohanan Pilankuvittil',
     role: 'Project Consultant',
     image: '/assets/meet-our-team/Mohananpilankuvittl PROJECT CONSULTANT.webp',
-    bg500: '#1E293B', // Dark Charcoal
+    bg500: '#1E293B',
     bg900: '#0F172A',
   },
 ];
 
 export const MeetOurTeamSection: React.FC = () => {
+  const containerVariants: Variants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const cardVariants: Variants = {
+    hidden: { 
+      opacity: 0, 
+      y: 40,
+      scale: 0.96,
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: { 
+        type: 'spring' as const,
+        stiffness: 80,
+        damping: 15,
+        duration: 0.5,
+      },
+    },
+  };
+
+  const headerVariants: Variants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' as const }
+    }
+  };
+
   return (
     <section className="relative w-full bg-[#FAF6F0] pt-16 sm:pt-18 lg:pt-[4.5rem] overflow-hidden z-10">
       
@@ -154,8 +192,13 @@ export const MeetOurTeamSection: React.FC = () => {
       {/* ========================================================================= */}
       {/* HERO BANNER: FULL-WIDTH EDGE-TO-EDGE WITH COMPACT VERTICAL SPACING        */}
       {/* ========================================================================= */}
-      <div className="relative w-full py-8 sm:py-10 lg:py-[2vw] mb-6 sm:mb-8 lg:mb-[1.8vw] flex flex-col justify-center items-center text-center bg-[#FAF6F0] px-4 sm:px-8 lg:px-[3vw] shadow-2xs overflow-hidden bg-[url('/assets/meet-our-team/background-image.webp')] bg-cover bg-center">
-        
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.25 }}
+        variants={headerVariants}
+        className="relative w-full py-8 sm:py-10 lg:py-[2vw] mb-6 sm:mb-8 lg:mb-[1.8vw] flex flex-col justify-center items-center text-center bg-[#FAF6F0] px-4 sm:px-8 lg:px-[3vw] shadow-2xs overflow-hidden bg-[url('/assets/meet-our-team/background-image.webp')] bg-cover bg-center"
+      >
         {/* Subtle Light Soft Warm Tint Overlay */}
         <div className="absolute inset-0 bg-[#FAF6F0]/65 pointer-events-none z-0" />
 
@@ -185,10 +228,8 @@ export const MeetOurTeamSection: React.FC = () => {
             A passionate team working together with dedication to bring you the freshest and finest meat products.<br className="hidden sm:inline" />
             We are committed to quality, hygiene and your trust.
           </p>
-
         </div>
-
-      </div>
+      </motion.div>
 
       {/* Main Container for Team Members Grid */}
       <div className="relative z-10 w-full max-w-[1400px] lg:max-w-[88vw] mx-auto px-4 sm:px-6 lg:px-[3vw]">
@@ -199,18 +240,36 @@ export const MeetOurTeamSection: React.FC = () => {
         <div className="mb-16 lg:mb-[4vw]">
           
           {/* Section Divider Header */}
-          <div className="flex items-center justify-center gap-4 lg:gap-[1.2vw] mb-8 sm:mb-10 lg:mb-[2.2vw]">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={headerVariants}
+            className="flex items-center justify-center gap-4 lg:gap-[1.2vw] mb-8 sm:mb-10 lg:mb-[2.2vw]"
+          >
             <span className="h-[1.5px] lg:h-[0.1vw] w-12 sm:w-16 lg:w-[4vw] bg-[#D4A437]" />
             <h3 className="font-chau font-extrabold text-2xl sm:text-3xl lg:text-[2.2vw] text-[#153520] uppercase tracking-wider">
               LED BY
             </h3>
             <span className="h-[1.5px] lg:h-[0.1vw] w-12 sm:w-16 lg:w-[4vw] bg-[#D4A437]" />
-          </div>
+          </motion.div>
 
           {/* 3 Leader Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-[1.6vw] max-w-4xl sm:max-w-5xl lg:max-w-[56vw] mx-auto">
-            {executiveLeaders.map((leader) => (
-              <div key={leader.name} className="relative w-full mb-12 lg:mb-[3vw] group">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.15 }}
+            variants={containerVariants}
+            className="grid grid-cols-2 md:grid-cols-3 gap-5 lg:gap-[1.6vw] max-w-4xl sm:max-w-5xl lg:max-w-[56vw] mx-auto"
+          >
+            {executiveLeaders.map((leader, index) => (
+              <motion.div 
+                key={leader.name} 
+                variants={cardVariants}
+                className={`relative w-full mb-12 lg:mb-[3vw] group ${
+                  index === 2 ? 'col-span-2 md:col-span-1 max-w-[50%] mx-auto md:max-w-none md:mx-0' : ''
+                }`}
+              >
                 
                 {/* Upper Portrait Photo Container (Shifted 16px right from container edge) */}
                 <div className="relative w-[calc(100%-16px)] ml-4 aspect-[4/4.2] overflow-hidden bg-slate-100 shadow-md">
@@ -244,7 +303,7 @@ export const MeetOurTeamSection: React.FC = () => {
                     style={{ borderBottomColor: leader.bg900 }}
                   />
 
-                  <h4 className="font-chau font-regular text-lg sm:text-xl lg:text-[1.25vw] text-white">
+                  <h4 className="font-chau font-regular text-xs sm:text-lg md:text-xl lg:text-[1.25vw] text-white truncate">
                     {leader.name}
                   </h4>
                   <div className="flex items-center gap-1.5 mt-0.5 text-white/90">
@@ -257,9 +316,9 @@ export const MeetOurTeamSection: React.FC = () => {
                   </div>
                 </div>
 
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
         </div>
 
@@ -269,18 +328,34 @@ export const MeetOurTeamSection: React.FC = () => {
         <div className="mb-12 lg:mb-[3vw]">
           
           {/* Section Divider Header */}
-          <div className="flex items-center justify-center gap-4 lg:gap-[1.2vw] mb-8 sm:mb-10 lg:mb-[2.2vw]">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={headerVariants}
+            className="flex items-center justify-center gap-4 lg:gap-[1.2vw] mb-8 sm:mb-10 lg:mb-[2.2vw]"
+          >
             <span className="h-[1.5px] lg:h-[0.1vw] w-12 sm:w-16 lg:w-[4vw] bg-[#D4A437]" />
             <h3 className="font-chau font-extrabold text-2xl sm:text-3xl lg:text-[2.2vw] text-[#153520] uppercase tracking-wider">
               DIRECTORS
             </h3>
             <span className="h-[1.5px] lg:h-[0.1vw] w-12 sm:w-16 lg:w-[4vw] bg-[#D4A437]" />
-          </div>
+          </motion.div>
 
           {/* Directors 5-Column Responsive Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 lg:gap-[1.4vw]">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
+            variants={containerVariants}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 lg:gap-[1.4vw]"
+          >
             {directors.map((member) => (
-              <div key={member.name} className="relative w-full mb-10 lg:mb-[2.5vw] group">
+              <motion.div 
+                key={member.name} 
+                variants={cardVariants}
+                className="relative w-full mb-10 lg:mb-[2.5vw] group"
+              >
                 
                 {/* Upper Portrait Photo Container (Shifted 16px right for seamless alignment) */}
                 <div className="relative w-[calc(100%-16px)] ml-4 aspect-[4/4.5] overflow-hidden bg-slate-100 shadow-md">
@@ -314,7 +389,7 @@ export const MeetOurTeamSection: React.FC = () => {
                     style={{ borderBottomColor: member.bg900 }}
                   />
 
-                  <h4 className="font-chau font-normal text-base sm:text-lg lg:text-[1.05vw] text-white ">
+                   <h4 className="font-chau font-normal text-xs sm:text-base md:text-lg lg:text-[1.05vw] text-white truncate">
                     {member.name}
                   </h4>
                   <div className="flex items-center gap-1 mt-0.5 text-white/90">
@@ -327,9 +402,9 @@ export const MeetOurTeamSection: React.FC = () => {
                   </div>
                 </div>
 
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
         </div>
 

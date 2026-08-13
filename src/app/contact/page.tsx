@@ -2,25 +2,17 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
   Phone,
   MessageSquare,
   Mail,
   MapPin,
   Clock,
-  ShieldCheck,
-  Truck,
-  Award,
-  ChevronRight,
   Send,
   CheckCircle2,
   AlertCircle,
-  User,
-  Tag,
   PhoneCall,
-  ArrowUpRight,
+  ChevronRight,
 } from 'lucide-react';
 import Container from '@/components/ui/Container';
 
@@ -41,517 +33,316 @@ interface FormErrors {
 }
 
 export default function ContactPage() {
-  const companyName = 'Meatin Foods Pvt. Ltd.';
+  const companyName = 'MEATIN FARMS AND FOODS LLP';
   const phone1 = '+91 9946 61 61 28';
   const phone2 = '+91 9946 61 61 68';
   const rawPhone1 = '919946616128';
   const email = 'info@meatinfoods.com';
-  const address = '15/809 E, Panchami Complex, Perumpilavu, Karikkad P.O., 680 519, Thrissur District, Kerala, India.';
 
   const [formData, setFormData] = useState<FormData>({
-    fullName: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
+    fullName: '', email: '', phone: '', subject: '', message: '',
   });
-
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const validate = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full Name is required';
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email Address is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Enter a valid email address';
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone Number is required';
-    }
-
-    if (!formData.subject.trim()) {
-      newErrors.subject = 'Subject is required';
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = 'Message must be at least 10 characters';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const e: FormErrors = {};
+    if (!formData.fullName.trim()) e.fullName = 'Full Name is required';
+    if (!formData.email.trim()) e.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) e.email = 'Enter a valid email';
+    if (!formData.phone.trim()) e.phone = 'Phone is required';
+    if (!formData.subject.trim()) e.subject = 'Subject is required';
+    if (!formData.message.trim()) e.message = 'Message is required';
+    else if (formData.message.trim().length < 10) e.message = 'At least 10 characters';
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = ev.target;
+    setFormData(p => ({ ...p, [name]: value }));
+    if (errors[name as keyof FormErrors]) setErrors(p => ({ ...p, [name]: undefined }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (ev: React.FormEvent) => {
+    ev.preventDefault();
     if (!validate()) return;
-
     setIsSubmitting(true);
     setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: '',
-      });
+      setIsSubmitting(false); setSubmitted(true);
+      setFormData({ fullName: '', email: '', phone: '', subject: '', message: '' });
     }, 1200);
   };
 
+  const inputCls = (field: keyof FormErrors) =>
+    `w-full px-4 py-3 sm:py-2.5 lg:py-[0.7vw] px-4 sm:px-3.5 lg:px-[1vw] bg-white border rounded-xl text-sm lg:text-[0.9vw] font-manrope text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all ${
+      errors[field]
+        ? 'border-[#D62828] focus:ring-2 focus:ring-[#D62828]/20'
+        : 'border-slate-200 focus:border-[#1F5A3C] focus:ring-2 focus:ring-[#1F5A3C]/15'
+    }`;
+
   return (
-    <div className="bg-meatin-bg-light min-h-screen font-poppins text-slate-900 pb-16">
-      {/* 1. HERO BANNER WITH BACKGROUND IMAGE (FULL SCREEN HEIGHT) */}
-      <section className="relative min-h-screen flex flex-col justify-center pt-28 pb-28 sm:pb-32 overflow-hidden bg-slate-950">
-        {/* Background Image: src/contact-us/hero-bg-image.webp */}
+    <div className="bg-[#FAF8F5] text-slate-800 min-h-screen font-manrope">
+
+      {/* ─── 1. FULL-SCREEN HERO ─────────────────────────────────────── */}
+      <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+
+        {/* Background image — covers full hero */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/contact-us/hero-bg-image.webp"
-            alt="MEATIn Processing Plant & Truck Background"
+            alt="MEATIN Processing & Delivery"
             fill
             priority
-            className="object-cover object-right sm:object-center filter brightness-95"
+            className="object-cover object-center"
             unoptimized
           />
-          {/* Gradient overlay for readability on left content */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-transparent sm:w-2/3 md:w-3/5" />
-          <div className="absolute inset-0 bg-slate-950/30" />
+          {/* White gradient — left ~60% for content, right 40% full image */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/97 via-[45%] to-white/10 to-[68%]" />
+          {/* Bottom fade into page bg */}
+          <div className="absolute inset-x-0 bottom-0 h-24 lg:h-[7vw] bg-gradient-to-t from-[#FAF8F5] to-transparent" />
         </div>
 
-        <Container className="relative z-10">
-          <div className="max-w-2xl text-white space-y-5 sm:space-y-6">
-            {/* Top Subtitle */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-meatin-yellow text-xs sm:text-sm font-bold tracking-widest uppercase flex items-center gap-2"
-            >
-              <span>WE ARE HERE TO HELP</span>
-            </motion.div>
+        {/* Hero content */}
+        <Container className="relative z-10 py-28 sm:py-32 lg:py-[8vw]">
+          <div className="max-w-2xl lg:max-w-[45vw] space-y-5 lg:space-y-[1.4vw]">
 
-            {/* Main Headline */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="space-y-3"
-            >
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-none text-white">
-                CONTACT <span className="text-meatin-yellow">US</span>
-              </h1>
-              {/* Green Bar Accent */}
-              <div className="w-20 h-1.5 bg-meatin-green rounded-full" />
-            </motion.div>
+            {/* Eyebrow */}
+            <p className="font-manrope text-xs lg:text-[0.85vw] font-bold uppercase tracking-widest text-[#1F5A3C]">
+              We Are Here To Help
+            </p>
+
+            {/* H1 */}
+            <h1 className="font-chau uppercase leading-[1.02] tracking-tight">
+              <span className="block text-5xl sm:text-6xl lg:text-[5vw] text-[#153520]">CONTACT</span>
+              <span className="block text-5xl sm:text-6xl lg:text-[5vw] text-[#D62828]">
+                US
+                <span className="inline-block ml-2 text-[#1F5A3C]">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="inline w-7 h-7 lg:w-[2.2vw] lg:h-[2.2vw] -translate-y-2 lg:-translate-y-[0.3vw]"><path d="M17 8C8 10 5 16 3 21C8 21 14 19 17 14C19 11 18 9 17 8Z" /></svg>
+                </span>
+              </span>
+            </h1>
+
+            {/* Green accent bar */}
+            <div className="w-20 lg:w-[5vw] h-1.5 lg:h-[0.4vw] bg-[#1F5A3C] rounded-full" />
 
             {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-slate-200 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-lg"
-            >
-              Have questions, feedback, or need assistance? Our team is here to help you with anything you need.
-            </motion.p>
+            <p className="font-manrope text-sm lg:text-[1vw] text-slate-600 leading-relaxed max-w-lg lg:max-w-[38vw] font-medium">
+              Have questions, feedback, or need assistance? Our dedicated team is ready to support you every day of the week.
+            </p>
 
-            {/* Action Buttons Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap items-center gap-4 pt-2"
-            >
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-3 lg:gap-[0.8vw] pt-1">
               <a
                 href={`tel:+${rawPhone1}`}
-                className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-meatin-green hover:bg-meatin-green-hover text-white text-xs sm:text-sm font-semibold tracking-wide shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center gap-2 lg:gap-[0.5vw] px-7 lg:px-[1.8vw] py-3 lg:py-[0.8vw] rounded-full bg-[#1F5A3C] hover:bg-[#153520] text-white text-sm lg:text-[0.9vw] font-semibold tracking-wide shadow-lg transition-all duration-300 hover:scale-105"
               >
-                <PhoneCall className="w-4 h-4" />
-                <span>Call Us Now</span>
+                <PhoneCall className="w-4 h-4 lg:w-[1.1vw] lg:h-[1.1vw]" />
+                Call Us Now
               </a>
-
               <a
                 href={`https://wa.me/${rawPhone1}`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/40 text-white text-xs sm:text-sm font-semibold tracking-wide backdrop-blur-md transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center gap-2 lg:gap-[0.5vw] px-7 lg:px-[1.8vw] py-3 lg:py-[0.8vw] rounded-full bg-white border border-slate-200 text-slate-800 text-sm lg:text-[0.9vw] font-semibold tracking-wide shadow-sm transition-all duration-300 hover:border-[#1F5A3C] hover:text-[#1F5A3C] hover:scale-105"
               >
-                <MessageSquare className="w-4 h-4 text-emerald-400" />
-                <span>Chat on WhatsApp</span>
+                <MessageSquare className="w-4 h-4 lg:w-[1.1vw] lg:h-[1.1vw] text-emerald-600" />
+                WhatsApp Us
               </a>
-            </motion.div>
+            </div>
 
-            {/* Value Highlights Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 max-w-xl"
-            >
-              {/* Highlight 1 */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-meatin-green/30 border border-meatin-green/50 flex items-center justify-center text-meatin-green shrink-0">
-                  <ShieldCheck className="w-5 h-5 text-meatin-green" />
-                </div>
-                <div>
-                  <span className="block text-xs font-bold text-white">100% Hygienic</span>
-                  <span className="text-[11px] text-slate-300">Safe &amp; Clean</span>
-                </div>
-              </div>
-
-              {/* Highlight 2 */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-meatin-green/30 border border-meatin-green/50 flex items-center justify-center text-meatin-green shrink-0">
-                  <Truck className="w-5 h-5 text-meatin-green" />
-                </div>
-                <div>
-                  <span className="block text-xs font-bold text-white">On-time Delivery</span>
-                  <span className="text-[11px] text-slate-300">Right to your door</span>
-                </div>
-              </div>
-
-              {/* Highlight 3 */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-meatin-green/30 border border-meatin-green/50 flex items-center justify-center text-meatin-green shrink-0">
-                  <Award className="w-5 h-5 text-meatin-green" />
-                </div>
-                <div>
-                  <span className="block text-xs font-bold text-white">Best Quality</span>
-                  <span className="text-[11px] text-slate-300">You can trust</span>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </Container>
       </section>
 
-      {/* 2. OVERLAPPING 4-COLUMN CONTACT CARD */}
-      <Container className="relative z-20 -mt-16 sm:-mt-20 lg:-mt-24 max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-5 lg:py-6 lg:px-4 relative overflow-hidden"
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
-            {/* Column 1: Call Us */}
-            <div className="flex flex-col items-center text-center pt-3 sm:pt-0 sm:px-2 lg:px-3">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-meatin-green mb-3 shadow-sm">
-                <Phone className="w-5.5 h-5.5 text-meatin-green" />
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5">Call Us</h3>
-              <a
-                href={`tel:+${rawPhone1}`}
-                className="text-xs sm:text-sm font-bold text-slate-800 hover:text-meatin-green transition-colors"
-              >
-                {phone1}
-              </a>
-              <a
-                href={`tel:+919946616168`}
-                className="text-xs sm:text-sm font-bold text-slate-800 hover:text-meatin-green transition-colors mt-0.5"
-              >
-                {phone2}
-              </a>
-              <span className="text-[11px] text-slate-400 font-medium mt-2">
-                Mon - Sun: 8:00 AM - 8:00 PM
-              </span>
-            </div>
-
-            {/* Column 2: WhatsApp Us */}
-            <div className="flex flex-col items-center text-center pt-5 sm:pt-0 sm:px-2 lg:px-3">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-meatin-green mb-3 shadow-sm">
-                <MessageSquare className="w-5.5 h-5.5 text-meatin-green" />
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5">WhatsApp Us</h3>
-              <a
-                href={`https://wa.me/${rawPhone1}`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-xs sm:text-sm font-bold text-slate-800 hover:text-meatin-green transition-colors"
-              >
-                {phone1}
-              </a>
-              <span className="text-[11px] text-slate-400 font-medium mt-2">
-                Quick support on WhatsApp
-              </span>
-            </div>
-
-            {/* Column 3: Email Us */}
-            <div className="flex flex-col items-center text-center pt-5 sm:pt-0 sm:px-2 lg:px-3">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-meatin-green mb-3 shadow-sm">
-                <Mail className="w-5.5 h-5.5 text-meatin-green" />
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5">Email Us</h3>
-              <a
-                href={`mailto:${email}`}
-                className="text-xs sm:text-sm font-bold text-slate-800 hover:text-meatin-green transition-colors break-all"
-              >
-                {email}
-              </a>
-              <span className="text-[11px] text-slate-400 font-medium mt-2">
-                We reply within 24 hours
-              </span>
-            </div>
-
-            {/* Column 4: Visit Us */}
-            <div className="flex flex-col items-center text-center pt-5 sm:pt-0 sm:px-2 lg:px-3 relative z-10">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-meatin-green mb-3 shadow-sm">
-                <MapPin className="w-5.5 h-5.5 text-meatin-green" />
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1">Visit Us</h3>
-              <p className="text-xs text-slate-600 font-medium leading-snug">
-                {companyName},<br />
-                Kerala, India
-              </p>
-              <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-bold text-meatin-green hover:text-meatin-green-hover transition-colors mt-2"
-              >
-                <span>Get directions</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </a>
+      {/* ─── 2. QUICK-CONTACT CARDS (overlapping) ───────────────────── */}
+      <section className="relative z-10 -mt-6 lg:-mt-[1.8vw]">
+        <Container>
+          <div className="bg-white rounded-[28px] lg:rounded-[2vw] shadow-xl border border-slate-100 p-4 sm:p-5 lg:p-[1.4vw]">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-y-2 sm:divide-y-0 sm:divide-x divide-slate-100">
+              {[
+                {
+                  icon: <Phone className="w-5 h-5 lg:w-[1.4vw] lg:h-[1.4vw]" />,
+                  label: 'Call Us',
+                  content: <><a href={`tel:+${rawPhone1}`} className="font-bold text-xs lg:text-[0.85vw] text-slate-800 hover:text-[#1F5A3C] transition-colors block">{phone1}</a><a href="tel:+919946616168" className="font-bold text-xs lg:text-[0.85vw] text-slate-800 hover:text-[#1F5A3C] transition-colors block">{phone2}</a></>,
+                  sub: 'Mon – Sun: 8 AM – 8 PM',
+                },
+                {
+                  icon: <MessageSquare className="w-5 h-5 lg:w-[1.4vw] lg:h-[1.4vw]" />,
+                  label: 'WhatsApp',
+                  content: <a href={`https://wa.me/${rawPhone1}`} target="_blank" rel="noreferrer" className="font-bold text-xs lg:text-[0.85vw] text-slate-800 hover:text-[#1F5A3C] transition-colors block">{phone1}</a>,
+                  sub: 'Instant support',
+                },
+                {
+                  icon: <Mail className="w-5 h-5 lg:w-[1.4vw] lg:h-[1.4vw]" />,
+                  label: 'Email Us',
+                  content: <a href={`mailto:${email}`} className="font-bold text-xs lg:text-[0.85vw] text-slate-800 hover:text-[#1F5A3C] transition-colors break-all block">{email}</a>,
+                  sub: 'Reply within 24 hrs',
+                },
+                {
+                  icon: <MapPin className="w-5 h-5 lg:w-[1.4vw] lg:h-[1.4vw]" />,
+                  label: 'Visit Us',
+                  content: <p className="text-xs lg:text-[0.85vw] text-slate-600 font-medium">Thrissur, Kerala, India</p>,
+                  sub: '',
+                  extra: <a href="https://maps.google.com/?q=Perumpilavu+Thrissur+Kerala" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs lg:text-[0.8vw] font-bold text-[#1F5A3C] hover:text-[#153520] transition-colors mt-1 lg:mt-[0.3vw]"><ChevronRight className="w-3.5 h-3.5 lg:w-[1vw] lg:h-[1vw]" />Get directions</a>,
+                },
+              ].map((card, i) => (
+                <div key={i} className="flex flex-col items-center text-center px-3 py-4 sm:py-2 lg:py-[0.8vw]">
+                  <div className="w-11 h-11 lg:w-[3.2vw] lg:h-[3.2vw] rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#1F5A3C] mb-2.5 lg:mb-[0.8vw] shadow-sm">
+                    {card.icon}
+                  </div>
+                  <h3 className="font-chau text-sm lg:text-[1.1vw] text-slate-900 mb-1.5 lg:mb-[0.5vw] tracking-wide">{card.label}</h3>
+                  {card.content}
+                  {card.sub && <span className="text-[10px] lg:text-[0.72vw] text-slate-400 font-medium mt-1.5 lg:mt-[0.5vw]">{card.sub}</span>}
+                  {'extra' in card && card.extra}
+                </div>
+              ))}
             </div>
           </div>
-        </motion.div>
-      </Container>
+        </Container>
+      </section>
 
-      {/* 3. INQUIRY FORM & ADDRESS DETAIL SECTION */}
-      <Container className="pt-8 sm:pt-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
-          {/* Registered Address Info Card */}
-          <div className="lg:col-span-5 bg-white rounded-3xl p-5 sm:p-6 shadow-xl border border-slate-100 flex flex-col justify-between h-full space-y-4">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-meatin-green/10 border border-meatin-green/20 flex items-center justify-center text-meatin-green shrink-0">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-bold text-meatin-red uppercase tracking-wider">
-                    Official Office
-                  </span>
-                  <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-tight">Registered Office</h3>
-                </div>
-              </div>
-
-              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed font-medium">
-                <strong className="text-slate-900 block mb-0.5 font-bold">MEATIN FARMS AND FOODS LLP</strong>
-                15/809 E, Panchami Complex,<br />
-                Perumpilavu, Karikkad P.O., 680 519,<br />
-                Thrissur District, Kerala, India.
-              </p>
-
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5">
-                <div className="flex items-center justify-between text-xs text-slate-600">
-                  <span className="font-medium">Customer Support:</span>
-                  <span className="font-bold text-slate-900">{phone1}</span>
-                </div>
-                <div className="flex items-center justify-between text-xs text-slate-600">
-                  <span className="font-medium">Direct Email:</span>
-                  <span className="font-bold text-slate-900">{email}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Location Map Embed (Flex-1 to fill equal height as form) */}
-            <div className="w-full flex-1 min-h-[220px] rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative mt-2">
-              <iframe
-                title="MEATIn Registered Office Location Map"
-                src="https://maps.google.com/maps?q=Perumpilavu,%20Thrissur,%20Kerala&t=&z=14&ie=UTF8&iwloc=&output=embed"
-                className="w-full h-full border-0 absolute inset-0"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          </div>
-
-          {/* Inquiry Form */}
-          <div className="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-7 lg:p-8 shadow-xl border border-slate-100 flex flex-col justify-between h-full">
-            <div className="mb-6">
-              <span className="text-xs font-bold uppercase tracking-wider text-meatin-green">
-                Drop Us A Note
+      {/* ─── 3. SECTION TITLE ────────────────────────────────────────── */}
+      <section className="pt-12 pb-0 lg:pt-[3.5vw]">
+        <Container>
+          <div className="text-center">
+            <h2 className="font-chau uppercase text-2xl sm:text-4xl lg:text-[3.2vw] tracking-tight text-slate-900 leading-tight">
+              <span className="text-[#153520]">GET IN </span>
+              <span className="text-[#1F5A3C] relative">
+                TOUCH
+                <span className="block w-16 lg:w-[4.5vw] h-1.5 lg:h-[0.4vw] bg-[#1F5A3C] rounded-full mt-1.5 lg:mt-[0.5vw] mx-auto" />
               </span>
-              <h2 className="text-2xl font-bold text-slate-900 mt-1">Send Us A Message</h2>
-              <p className="text-slate-500 text-xs sm:text-sm mt-1">
-                Fill out the form below and our team will get back to you shortly.
-              </p>
-            </div>
+            </h2>
+            <p className="font-manrope text-xs sm:text-sm lg:text-[0.95vw] text-slate-500 mt-3 lg:mt-[0.8vw] max-w-md lg:max-w-[32vw] mx-auto font-medium">
+              Fill out the form below and our team will get back to you shortly.
+            </p>
+          </div>
+        </Container>
+      </section>
 
-            {submitted ? (
-              <div className="p-8 bg-meatin-green/10 rounded-2xl border border-meatin-green/20 text-center space-y-4">
-                <div className="w-14 h-14 rounded-full bg-meatin-green text-white flex items-center justify-center mx-auto shadow-green-glow">
-                  <CheckCircle2 className="w-7 h-7" />
+      {/* ─── 4. FORM + ADDRESS + MAP ─────────────────────────────────── */}
+      <section className="pt-8 pb-16 lg:pt-[2.2vw] lg:pb-[4.5vw]">
+        <Container>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-[2vw] items-stretch">
+
+            {/* ── Left: Address card + Map ── */}
+            <div className="lg:col-span-5 flex flex-col gap-5 lg:gap-[1.4vw]">
+              <div className="bg-white rounded-[24px] lg:rounded-[1.8vw] border border-slate-200/80 shadow-sm p-5 sm:p-6 lg:p-[1.8vw] space-y-4 lg:space-y-[1.2vw]">
+                <div className="flex items-center gap-3 lg:gap-[0.8vw] pb-3 lg:pb-[0.8vw] border-b border-slate-100">
+                  <div className="w-10 h-10 lg:w-[2.8vw] lg:h-[2.8vw] rounded-xl bg-[#1F5A3C]/10 border border-[#1F5A3C]/20 flex items-center justify-center text-[#1F5A3C] shrink-0">
+                    <MapPin className="w-4.5 h-4.5 lg:w-[1.2vw] lg:h-[1.2vw]" />
+                  </div>
+                  <div>
+                    <span className="font-manrope text-[10px] lg:text-[0.72vw] font-bold uppercase tracking-widest text-[#D62828]">Registered Office</span>
+                    <h3 className="font-chau text-base lg:text-[1.25vw] text-slate-900 tracking-wide">Head Office</h3>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900">Message Sent Successfully!</h3>
-                <p className="text-slate-600 text-xs sm:text-sm max-w-md mx-auto">
-                  Thank you for contacting MEATIn. Our team will review your inquiry and reply within 24 hours.
+
+                <p className="font-manrope text-xs lg:text-[0.85vw] text-slate-600 leading-relaxed font-medium">
+                  <strong className="font-bold text-slate-900 lg:text-[0.9vw] block mb-1 lg:mb-[0.3vw]">{companyName}</strong>
+                  15/809 E, Panchami Complex,<br />
+                  Perumpilavu, Karikkad P.O., 680 519,<br />
+                  Thrissur District, Kerala, India.
                 </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="px-6 py-2.5 rounded-full bg-meatin-green text-white text-xs font-semibold hover:bg-meatin-green-hover transition-colors"
+
+                <div className="rounded-xl lg:rounded-[1vw] bg-[#FAF8F5] border border-slate-100 p-3.5 lg:p-[1vw] space-y-2 lg:space-y-[0.6vw]">
+                  {[
+                    { label: 'Phone:', value: phone1, href: `tel:+${rawPhone1}` },
+                    { label: 'Email:', value: email, href: `mailto:${email}` },
+                  ].map((row, i) => (
+                    <div key={i} className="flex items-center justify-between text-xs lg:text-[0.8vw] font-manrope text-slate-500">
+                      <span className="font-semibold">{row.label}</span>
+                      <a href={row.href} className="font-bold text-slate-800 hover:text-[#1F5A3C] transition-colors">{row.value}</a>
+                    </div>
+                  ))}
+                  <div className="flex items-center justify-between text-xs lg:text-[0.8vw] font-manrope text-slate-500">
+                    <span className="font-semibold flex items-center gap-1 lg:gap-[0.3vw]"><Clock className="w-3 h-3 lg:w-[0.9vw] lg:h-[0.9vw]" /> Hours:</span>
+                    <span className="font-bold text-slate-800">Mon – Sun: 8 AM – 8 PM</span>
+                  </div>
+                </div>
+
+                <a
+                  href="https://maps.google.com/?q=Perumpilavu+Thrissur+Kerala"
+                  target="_blank" rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 lg:gap-[0.4vw] text-xs lg:text-[0.8vw] font-bold text-[#1F5A3C] hover:text-[#153520] transition-colors"
                 >
-                  Send Another Message
-                </button>
+                  <ChevronRight className="w-3.5 h-3.5 lg:w-[1vw] lg:h-[1vw]" />
+                  Get Directions on Google Maps
+                </a>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="fullName" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Full Name <span className="text-meatin-red">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="fullName"
-                      name="fullName"
-                      value={formData.fullName}
-                      onChange={handleChange}
-                      placeholder="e.g. John Doe"
-                      className={`w-full px-4 py-2.5 bg-slate-50 border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all ${
-                        errors.fullName ? 'border-meatin-red focus:ring-2 focus:ring-meatin-red/30' : 'border-slate-200 focus:border-meatin-green focus:ring-2 focus:ring-meatin-green/20'
-                      }`}
-                    />
-                    {errors.fullName && (
-                      <p className="text-xs text-meatin-red mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.fullName}
-                      </p>
-                    )}
-                  </div>
 
-                  <div>
-                    <label htmlFor="email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Email Address <span className="text-meatin-red">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="e.g. john@example.com"
-                      className={`w-full px-4 py-2.5 bg-slate-50 border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all ${
-                        errors.email ? 'border-meatin-red focus:ring-2 focus:ring-meatin-red/30' : 'border-slate-200 focus:border-meatin-green focus:ring-2 focus:ring-meatin-green/20'
-                      }`}
-                    />
-                    {errors.email && (
-                      <p className="text-xs text-meatin-red mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.email}
-                      </p>
-                    )}
+              <div className="flex-1 min-h-[220px] lg:min-h-[16vw] rounded-[24px] lg:rounded-[1.8vw] overflow-hidden border border-slate-200/80 shadow-sm relative">
+                <iframe
+                  title="MEATIn Head Office Map"
+                  src="https://maps.google.com/maps?q=Perumpilavu,%20Thrissur,%20Kerala&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  className="w-full h-full border-0 absolute inset-0"
+                  allowFullScreen loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+            </div>
+
+            {/* ── Right: Form ── */}
+            <div className="lg:col-span-7 bg-white rounded-[24px] lg:rounded-[1.8vw] border border-slate-200/80 shadow-sm p-5 sm:p-7 lg:p-[2.2vw] flex flex-col">
+              <div className="mb-5 lg:mb-[1.4vw]">
+                <span className="font-manrope text-[10px] lg:text-[0.72vw] font-bold uppercase tracking-widest text-[#1F5A3C]">Drop Us A Note</span>
+                <h2 className="font-chau uppercase text-xl lg:text-[1.8vw] text-slate-900 tracking-wide mt-1">Send A Message</h2>
+                <p className="font-manrope text-xs lg:text-[0.85vw] text-slate-500 mt-1 font-medium">Our team will respond within 24 hours.</p>
+              </div>
+
+              {submitted ? (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-8 lg:p-[2.5vw] bg-[#1F5A3C]/5 rounded-2xl lg:rounded-[1.2vw] border border-[#1F5A3C]/15 space-y-4 lg:space-y-[1vw]">
+                  <div className="w-14 h-14 lg:w-[4vw] lg:h-[4vw] rounded-full bg-[#1F5A3C] text-white flex items-center justify-center shadow-md">
+                    <CheckCircle2 className="w-7 h-7 lg:w-[2vw] lg:h-[2vw]" />
                   </div>
+                  <h3 className="font-chau uppercase text-xl lg:text-[1.4vw] text-slate-900 tracking-wide">Message Sent!</h3>
+                  <p className="font-manrope text-xs lg:text-[0.85vw] text-slate-600 max-w-sm lg:max-w-[26vw] font-medium">Thank you for reaching out. We&apos;ll reply within 24 hours.</p>
+                  <button onClick={() => setSubmitted(false)} className="px-6 lg:px-[1.8vw] py-2.5 lg:py-[0.8vw] rounded-full bg-[#1F5A3C] hover:bg-[#153520] text-white text-xs lg:text-[0.8vw] font-semibold tracking-wide shadow-sm transition-colors">
+                    Send Another Message
+                  </button>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="phone" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Phone Number <span className="text-meatin-red">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="+91 99466 16128"
-                      className={`w-full px-4 py-2.5 bg-slate-50 border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all ${
-                        errors.phone ? 'border-meatin-red focus:ring-2 focus:ring-meatin-red/30' : 'border-slate-200 focus:border-meatin-green focus:ring-2 focus:ring-meatin-green/20'
-                      }`}
-                    />
-                    {errors.phone && (
-                      <p className="text-xs text-meatin-red mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.phone}
-                      </p>
-                    )}
+              ) : (
+                <form onSubmit={handleSubmit} className="flex-1 flex flex-col space-y-4 lg:space-y-[1.2vw]" noValidate>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-[1.2vw]">
+                    <div>
+                      <label htmlFor="fullName" className="block font-manrope text-[10px] lg:text-[0.72vw] font-bold uppercase tracking-widest text-slate-600 mb-1.5 lg:mb-[0.4vw]">Full Name <span className="text-[#D62828]">*</span></label>
+                      <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g. John Doe" className={inputCls('fullName')} />
+                      {errors.fullName && <p className="font-manrope text-[10px] lg:text-[0.72vw] text-[#D62828] mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3 lg:w-[0.9vw] lg:h-[0.9vw]" />{errors.fullName}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block font-manrope text-[10px] lg:text-[0.72vw] font-bold uppercase tracking-widest text-slate-600 mb-1.5 lg:mb-[0.4vw]">Email <span className="text-[#D62828]">*</span></label>
+                      <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" className={inputCls('email')} />
+                      {errors.email && <p className="font-manrope text-[10px] lg:text-[0.72vw] text-[#D62828] mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3 lg:w-[0.9vw] lg:h-[0.9vw]" />{errors.email}</p>}
+                    </div>
                   </div>
-
-                  <div>
-                    <label htmlFor="subject" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Subject <span className="text-meatin-red">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      placeholder="e.g. Order Inquiry"
-                      className={`w-full px-4 py-2.5 bg-slate-50 border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all ${
-                        errors.subject ? 'border-meatin-red focus:ring-2 focus:ring-meatin-red/30' : 'border-slate-200 focus:border-meatin-green focus:ring-2 focus:ring-meatin-green/20'
-                      }`}
-                    />
-                    {errors.subject && (
-                      <p className="text-xs text-meatin-red mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.subject}
-                      </p>
-                    )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-[1.2vw]">
+                    <div>
+                      <label htmlFor="phone" className="block font-manrope text-[10px] lg:text-[0.72vw] font-bold uppercase tracking-widest text-slate-600 mb-1.5 lg:mb-[0.4vw]">Phone <span className="text-[#D62828]">*</span></label>
+                      <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="+91 99466 16128" className={inputCls('phone')} />
+                      {errors.phone && <p className="font-manrope text-[10px] lg:text-[0.72vw] text-[#D62828] mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3 lg:w-[0.9vw] lg:h-[0.9vw]" />{errors.phone}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="subject" className="block font-manrope text-[10px] lg:text-[0.72vw] font-bold uppercase tracking-widest text-slate-600 mb-1.5 lg:mb-[0.4vw]">Subject <span className="text-[#D62828]">*</span></label>
+                      <input type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange} placeholder="e.g. Order Inquiry" className={inputCls('subject')} />
+                      {errors.subject && <p className="font-manrope text-[10px] lg:text-[0.72vw] text-[#D62828] mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3 lg:w-[0.9vw] lg:h-[0.9vw]" />{errors.subject}</p>}
+                    </div>
                   </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Message <span className="text-meatin-red">*</span>
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="How can we assist you?"
-                    className={`w-full px-4 py-2.5 bg-slate-50 border rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all resize-none ${
-                      errors.message ? 'border-meatin-red focus:ring-2 focus:ring-meatin-red/30' : 'border-slate-200 focus:border-meatin-green focus:ring-2 focus:ring-meatin-green/20'
-                    }`}
-                  />
-                  {errors.message && (
-                    <p className="text-xs text-meatin-red mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" /> {errors.message}
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-3.5 px-8 rounded-full bg-meatin-green hover:bg-meatin-green-hover text-white font-bold text-sm tracking-wide shadow-green-glow transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center gap-2">
-                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Submitting...
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-2">
-                      <Send className="w-4 h-4" />
-                      Submit Message
-                    </span>
-                  )}
-                </button>
-              </form>
-            )}
+                  <div className="flex-1 flex flex-col">
+                    <label htmlFor="message" className="block font-manrope text-[10px] lg:text-[0.72vw] font-bold uppercase tracking-widest text-slate-600 mb-1.5 lg:mb-[0.4vw]">Message <span className="text-[#D62828]">*</span></label>
+                    <textarea id="message" name="message" rows={5} value={formData.message} onChange={handleChange} placeholder="How can we help you?" className={`flex-1 resize-none ${inputCls('message')}`} />
+                    {errors.message && <p className="font-manrope text-[10px] lg:text-[0.72vw] text-[#D62828] mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3 lg:w-[0.9vw] lg:h-[0.9vw]" />{errors.message}</p>}
+                  </div>
+                  <button type="submit" disabled={isSubmitting} className="w-full py-3.5 lg:py-[1vw] px-8 lg:px-[2vw] rounded-full bg-[#1F5A3C] hover:bg-[#153520] text-white font-manrope font-bold text-sm lg:text-[0.95vw] tracking-wide shadow-md transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60">
+                    {isSubmitting ? (<><span className="w-4 h-4 lg:w-[1.2vw] lg:h-[1.2vw] border-2 border-white border-t-transparent rounded-full animate-spin" />Submitting...</>) : (<><Send className="w-4 h-4 lg:w-[1.2vw] lg:h-[1.2vw]" />Submit Message</>)}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </section>
+
     </div>
   );
 }

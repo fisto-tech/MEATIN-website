@@ -544,7 +544,7 @@ export const CareersSection: React.FC = () => {
         {/* Dynamic Display: Carousel vs Expanded Multi-row Grid */}
         {viewAllJobs ? (
           /* Expanded Multi-Row Grid View (Sleek Compact 5-6 Column Cards) */
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 lg:gap-[0.9vw]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 lg:gap-[0.9vw]">
             {allJobOpenings.map((job) => (
               <div
                 key={job.id}
